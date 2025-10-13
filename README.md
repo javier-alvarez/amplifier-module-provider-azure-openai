@@ -15,18 +15,33 @@ This module enables Amplifier to use Azure OpenAI Service deployments for langua
 - **Tool Calling Support**: Full support for function calling/tools
 - **Managed Identity Support**: Seamless authentication in Azure environments
 
+## Prerequisites
+
+- **Python 3.11+**
+- **[UV](https://github.com/astral-sh/uv)** - Fast Python package manager
+
+### Installing UV
+
+```bash
+# macOS/Linux/WSL
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
 ## Installation
 
 Install the module using pip:
 
 ```bash
-pip install -e amplifier-module-provider-azure-openai
+uv pip install -e amplifier-module-provider-azure-openai
 ```
 
 For Managed Identity authentication support, install with the `azure` extra:
 
 ```bash
-pip install -e amplifier-module-provider-azure-openai[azure]
+uv pip install -e amplifier-module-provider-azure-openai[azure]
 ```
 
 Or add it to your Amplifier configuration for automatic installation.
@@ -236,11 +251,13 @@ use_default_credential = true
 ```
 
 Or via environment variable:
+
 ```bash
 export AZURE_USE_DEFAULT_CREDENTIAL=true
 ```
 
 The `DefaultAzureCredential` tries multiple authentication methods in order:
+
 1. Environment variables (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID)
 2. Managed identity (if running in Azure)
 3. Azure CLI (if logged in locally with `az login`)
@@ -254,21 +271,25 @@ The `DefaultAzureCredential` tries multiple authentication methods in order:
 The module supports these environment variables as fallbacks:
 
 ### Authentication & Connection
+
 - `AZURE_OPENAI_ENDPOINT` or `AZURE_OPENAI_BASE_URL` - Azure OpenAI resource endpoint
 - `AZURE_OPENAI_API_KEY` or `AZURE_OPENAI_KEY` - API key for authentication
 - `AZURE_OPENAI_AD_TOKEN` - Azure AD token for authentication
 - `AZURE_OPENAI_API_VERSION` - API version (defaults to `2024-02-15-preview`)
 
 ### Managed Identity Configuration
+
 - `AZURE_USE_MANAGED_IDENTITY` - Enable managed identity authentication (`true`, `1`, or `yes`)
 - `AZURE_USE_DEFAULT_CREDENTIAL` - Enable DefaultAzureCredential authentication (`true`, `1`, or `yes`)
 - `AZURE_MANAGED_IDENTITY_CLIENT_ID` - Client ID for user-assigned managed identity
 
 ### Deployment & Model Configuration
+
 - `AZURE_OPENAI_DEFAULT_DEPLOYMENT` - Default deployment name to use when no mapping matches
 - `AZURE_OPENAI_DEFAULT_MODEL` - Default model to use for requests (defaults to `gpt-4`)
 
 ### Generation Parameters
+
 - `AZURE_OPENAI_MAX_TOKENS` - Maximum tokens for completion (defaults to `4096`)
 - `AZURE_OPENAI_TEMPERATURE` - Temperature for generation (defaults to `0.7`)
 
@@ -299,14 +320,17 @@ api_version = "2024-10-01-preview"  # Use a newer version
 ### Breaking Changes in Newer API Versions
 
 **API versions 2024-08-01-preview and later** have introduced parameter changes:
+
 - Use `max_completion_tokens` instead of `max_tokens`
 - The provider automatically handles this for you
 
 **Model-Specific Restrictions**: Some models (e.g., GPT-5 and later) have specific parameter requirements:
+
 - May only support default temperature values
 - Check Azure OpenAI documentation for your specific model's capabilities
 
 Example config for newer models:
+
 ```toml
 [provider.config]
 api_version = "2025-03-01-preview"
@@ -346,15 +370,18 @@ response = await session.send_message(
 ### Common Issues
 
 1. **Authentication Errors**
+
    - Verify your API key or Azure AD token is correct
    - Check that the endpoint URL includes `https://` and ends with `.openai.azure.com`
 
 2. **Deployment Not Found**
+
    - Ensure the deployment name exists in your Azure OpenAI resource
    - Check deployment mapping configuration
    - Verify the deployment is in a "Succeeded" state
 
 3. **API Version Errors**
+
    - Some features may require specific API versions
    - Try using the default version or check Azure documentation
 
@@ -368,7 +395,7 @@ Enable debug logging to see deployment resolution:
 
 ```python
 import logging
-logging.getLogger("amplifier_mod_provider_azure_openai").setLevel(logging.DEBUG)
+logging.getLogger("amplifier_module_provider_azure_openai").setLevel(logging.DEBUG)
 ```
 
 ## Differences from Standard OpenAI
@@ -386,6 +413,7 @@ MIT License - See [LICENSE](LICENSE) file for details.
 ## Support
 
 For issues or questions:
+
 - Check the [Amplifier documentation](https://github.com/amplifier-dev/amplifier)
 - Review [Azure OpenAI documentation](https://docs.microsoft.com/azure/cognitive-services/openai/)
 - File issues in the Amplifier repository

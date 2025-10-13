@@ -272,7 +272,7 @@ class AzureOpenAIProvider:
                     except json.JSONDecodeError:
                         input_dict = {"raw": tc.arguments}
 
-                    content_blocks.append(ToolCallContent(id=tc.id, name=tc.tool, input=input_dict))
+                    content_blocks.append(ToolCallContent(id=tc.id, name=tc.tool, arguments=input_dict))
 
             # Return standardized response
             return ProviderResponse(
