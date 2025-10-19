@@ -171,7 +171,7 @@ default_deployment = "fallback-deployment"
 
 - Request for "gpt-4" → Uses "production-gpt4"
 - Request for "gpt-3.5-turbo" → Uses "fast-gpt35"
-- Request for "claude-3" → Uses "fallback-deployment" (not in mapping)
+- Request for "claude-4" → Uses "fallback-deployment" (not in mapping)
 - Request for "my-custom-deploy" → Uses "my-custom-deploy" (if no default set)
 
 ## Authentication Options
